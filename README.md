@@ -21,6 +21,7 @@ This task gave me hands-on experience in operational network administration with
 - Prabhjot Kaur
 - Arshdeep Kaur
 
+- Balkaran Singh
 ---
 
 ## References
@@ -29,3 +30,19 @@ This task gave me hands-on experience in operational network administration with
 - PuTTY terminal client: https://www.putty.org/
 
 ---
+
+## Team Context and Personal Contribution
+
+This switch inventory task was completed as part of a team-based practicum assignment. Each group member was responsible for completing the full device recording process on a subset of Cisco switches. 
+
+In addition to my assigned group work, I also collaborated with a student from another group to prepare the shared workstation used for accessing the switches. This included hardware verification, BIOS configuration, Windows installation, and tool setup (Rufus and PuTTY).
+
+The documentation below reflects my personal execution of:
+- Physical workstation setup (in collaboration)
+- Efficient switch boot-up planning (6 at a time)
+- Data collection from 30 switches (CLI access and `show version`)
+- Manual double-check after each batch
+- Final secure return of all switches to designated storage
+
+While the overall project was distributed among team members, this version captures the portion I directly completed and managed.
+
