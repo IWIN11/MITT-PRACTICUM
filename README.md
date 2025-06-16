@@ -1,7 +1,8 @@
 # MITT-PRACTICUM
+
 My individual submission for the practicum.
 
-
+---
 
 ## Inventory Audit of 30 Cisco Switches in a Real-World School IT Environment
 
@@ -13,9 +14,11 @@ To increase efficiency, I requested six power cables from the instructor, enabli
 
 After completing the data collection, I returned all switches to a **physically secure, access-controlled storage location** designed for equipment protection, following standard ESD and inventory protocols.
 
+---
+
 ### Team Context and Personal Contribution
 
-This switch inventory task was completed as part of a team-based practicum assignment. Each group member was responsible for completing the full device recording process on a subset of Cisco switches. 
+This switch inventory task was completed as part of a team-based practicum assignment. Each group member was responsible for completing the full device recording process on a subset of Cisco switches.
 
 In addition to my assigned group work, I also collaborated with a student from another group to prepare the shared workstation used for accessing the switches. This included hardware verification, BIOS configuration, Windows installation, and tool setup (Rufus and PuTTY).
 
@@ -28,6 +31,7 @@ The tasks outlined above reflect my direct contribution, including:
 
 While the overall project was shared among team members, this version highlights the portion I personally completed and managed.
 
+---
 
 ### Professional Insight
 
@@ -36,15 +40,14 @@ This task gave me hands-on experience in operational network administration with
 ---
 
 ### Team Members
+
 - Aiwei Tu
 - Prabhjot Kaur
 - Arshdeep Kaur
 
+---
 
-
-
-
-## MITT Practicum – Server Deployment, RAID Provisioning, and KVM Integration
+## Server Deployment, RAID Provisioning, and KVM Integration
 
 ### Overview
 
@@ -104,6 +107,7 @@ This project provided real-world experience in enterprise server deployment, RAI
 - Aiwei Tu
 - Prabhjot Kaur
 - Arshdeep Kaur
+- Balkaran Singh
 
 ---
 
@@ -120,11 +124,3 @@ This project provided real-world experience in enterprise server deployment, RAI
 ---
 
 > *This practicum reinforced my confidence and technical readiness for professional roles in system and network administration.*
-
-
-
-
-
-
-
-
