@@ -123,4 +123,15 @@ This project provided real-world experience in enterprise server deployment, RAI
 
 ---
 
+### Cognitive Effort and Problem-Solving Log
+
+During this project, significant time and energy were dedicated not just to executing tasks, but to understanding complex issues, troubleshooting unexpected hardware/software behaviors, and iteratively refining solutions. For example:
+
+- Spent over 1 hour diagnosing RAID disk detection issues, including consulting instructor, swapping drives, and verifying controller settings.
+- Invested multiple cycles in understanding KVM switch integration, testing various connection combinations, and confirming multi-host control functionality.
+- Engaged in peer discussions and online research to validate network topology plans and hardware compatibility.
+
+This cognitive investment enabled rapid adaptation and resilient problem-solving, contributing directly to my professional growth—even when the visible 'output' seemed limited.
+
+
 > *This practicum reinforced my confidence and technical readiness for professional roles in system and network administration.*
