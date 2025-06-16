@@ -13,7 +13,7 @@ To increase efficiency, I requested six power cables from the instructor, enabli
 
 After completing the data collection, I returned all switches to a **physically secure, access-controlled storage location** designed for equipment protection, following standard ESD and inventory protocols.
 
-## Team Context and Personal Contribution
+### Team Context and Personal Contribution
 
 This switch inventory task was completed as part of a team-based practicum assignment. Each group member was responsible for completing the full device recording process on a subset of Cisco switches. 
 
@@ -29,23 +29,102 @@ The tasks outlined above reflect my direct contribution, including:
 While the overall project was shared among team members, this version highlights the portion I personally completed and managed.
 
 
-## Professional Insight
+### Professional Insight
 
 This task gave me hands-on experience in operational network administration within a functioning school environment. It reinforced my technical skills in BIOS setup, CLI interaction, and device documentation, while also building confidence in troubleshooting, task efficiency, and hardware handling. These are directly transferable skills for entry-level roles in network and system administration, and this experience has strengthened my readiness for professional IT positions.
 
 ---
 
-## Team Members
+### Team Members
 - Aiwei Tu
 - Prabhjot Kaur
 - Arshdeep Kaur
-- Balkaran Singh
+
+
+
+
+
+## MITT Practicum – Server Deployment, RAID Provisioning, and KVM Integration
+
+### Overview
+
+As part of my practicum at MITT, I participated in deploying, configuring, and troubleshooting enterprise servers in a real-world IT environment. My responsibilities included hardware preparation, RAID storage implementation (Dell & HP), and the integration of a hardware KVM switch for efficient rack management. The project also covered data center-level cabling, network device setup, and collaborative teamwork.
+
 ---
 
-## References
-- Rufus bootable USB creation: https://rufus.ie/en/
-- PuTTY terminal client: https://www.putty.org/
+### Process Summary
+
+#### 1. Server Hardware Preparation
+
+- Assembled and verified the physical setup of Dell and HP enterprise servers.
+- Checked RAM, drive installation, and completed all power and data cable connections.
+- Created a **Proxmox VE bootable installation USB** using Rufus for OS deployment.
+
+#### 2. RAID Configuration
+
+- **Dell PowerEdge:**
+  - Accessed the PERC RAID controller during boot (`Ctrl+R`).
+  - Verified SAS/SATA disk recognition, troubleshot missing drives as needed.
+  - Created new Virtual Disks (VDs) with RAID levels (0/1/5/10), named and initialized each group.
+- **HP ProLiant:**
+  - Entered RAID configuration utility with `Ctrl+C`.
+  - Detected and troubleshot disk recognition, created and initialized logical drives using proper RAID levels.
+
+#### 3. KVM Switch Integration
+
+- Integrated a **Belkin 4-port USB+VGA KVM switch** for multi-host console access.
+- Connected each server's VGA and USB ports to the color-coded KVM cables.
+- Verified seamless keyboard, mouse, and display switching between up to four physical servers.
+
+#### 4. Network & Rack Awareness
+
+- Worked with a topology including Dell/HP servers, Fortinet switches, and a SonicWall router (WAN uplink).
+- Gained hands-on experience with structured cabling, rack layout, and logical port planning.
 
 ---
+
+### Team Context & Personal Contribution
+
+- **Proxmox bootable USB creation** and OS installation preparation.
+- **Full RAID configuration** on both Dell and HP servers (including troubleshooting all disk/initialization issues).
+- **KVM switch integration** for centralized management of multiple hosts.
+- **Documentation** of all configuration steps and encountered issues.
+- Collaborated with team members on hardware compatibility and cable management, while independently handling the key configuration tasks.
+
+---
+
+### Professional Insight
+
+This project provided real-world experience in enterprise server deployment, RAID provisioning, and KVM integration. I developed practical skills in hardware configuration, BIOS/RAID setup, and device documentation. These competencies are directly applicable to roles in network and system administration.
+
+---
+
+### Team Members
+
+- Aiwei Tu
+- Prabhjot Kaur
+- Arshdeep Kaur
+
+---
+
+### Key Skills & Technologies
+
+- Proxmox VE Installation
+- Dell PERC & HP Smart Array RAID Configuration (`Ctrl+R`, `Ctrl+C`)
+- RAID Levels 0/1/5/10 Implementation
+- Belkin USB+VGA KVM Switch Integration
+- Structured Cabling & Rack Management
+- Troubleshooting (Disk Detection, Initialization, Cable Mapping)
+- Documentation & Collaboration
+
+---
+
+> *This practicum reinforced my confidence and technical readiness for professional roles in system and network administration.*
+
+
+
+
+
+
 
 
