@@ -1,164 +1,154 @@
-# PDQ Batch Deployment Troubleshooting & Resolution
+# Batch Deployment Typical Troubleshooting Internship Summary
 
-## Problem Background
+## 1. Background
 
-During batch deployment using PDQ Deploy, one specific host (Host-11) remained persistently in the **"Queued"** state while all other hosts completed successfully.
-
----
-
-## Detailed Troubleshooting and Resolution Steps
-
-### 1. **Physical Network & IP Configuration Check**
-
-- **Issue Identification:**
-  - Inspected physical network connections and discovered Host-11 had its Ethernet cable connected incorrectly. The host had two network interface cards (**NICs**), and the active cable was connected to a different wall port compared to other hosts, resulting in the assignment of an incorrect **VLAN** and IP address.
-- **Resolution:**
-  - Corrected cable connection to the appropriate network port (**NIC**), ensuring proper VLAN assignment and correct IP allocation.
-
-### 2. **IP Address and Hostname Verification**
-
-- **Issue Identification:**
-  - Logged into Host-11 and executed:
-    ```cmd
-    ipconfig
-    hostname
-    ```
-  - IP mismatch detected: current IP `X.X.X.193` did not match the registered IP (`X.X.X.111`) in Active Directory (AD) and PDQ.
-- **Resolution:**
-  - After fixing the physical connection, the host automatically received the correct IP configuration (`X.X.X.111`).
-
-### 3. **DNS and AD Synchronization**
-
-- **Validation Steps:**
-  - Verified DNS resolution from PDQ server using:
-    ```cmd
-    ping Host-11
-    nslookup Host-11
-    ```
-  - Confirmed proper DNS-to-IP resolution post-IP correction.
-
-### 4. **Task Manager and PDQ Process Verification**
-
-- **Validation Steps:**
-  - Checked Task Manager for running PDQ deployment processes, specifically `PDQDeployRunner.exe`.
-  - Determined the deployment task never reached Host-11 as the PDQ-related processes were absent.
-
-### 5. **Service and Registry Checks**
-
-- **Service Validation:**
-  - Used `services.msc` to confirm **Remote Procedure Call (RPC)** and **Windows Management Instrumentation (WMI)** services were running normally.
-  - Verified **Remote Registry** service and configured it to start automatically.
-- **Administrative Share Verification (ADMIN$):**
-  - Verified ADMIN$ share status using:
-    ```cmd
-    net share
-    ```
-  - **Explanation:** ADMIN$ share is critical for remote software deployments as it allows administrative file access. If unavailable, deployment can fail due to permissions or access restrictions.
-
-### 6. **Restart and Configuration Synchronization**
-
-- After resolving physical network, IP, and registry settings, Host-11 was rebooted to apply all configuration changes and clear cached states or pending connections.
-
-### 7. **PDQ Console Refresh and Redeployment**
-
-- **Final Steps:**
-  - Refreshed host status in the PDQ Deploy console; confirmed Host-11 status showed as **Online**.
-  - Initiated deployment task again; deployment succeeded successfully.
+In this VMware Workstation and system batch deployment project, I was responsible for deploying applications to multiple physical workstations. During the process, I encountered several common failures that are highly representative of real-world troubleshooting and remediation. This document summarizes the main issue types, troubleshooting methods, operational commands, security awareness, and personal reflections, serving as a reference for future automation and IT operations improvements.
 
 ---
 
-## Common Errors & Troubleshooting Best Practices during PDQ Deployment
+## 2. Major Issues and Troubleshooting Procedures
 
-### ✅ Error 1: Network Path Not Found
+### 1. The Network Path Was Not Found
 
-- **Typical Causes:**
-  - Incorrect NIC connection causing IP mismatch.
-  - Device replacement (e.g., Host-9 replaced by Host-25), changing IP and hostname.
-  - Host not successfully joined to AD domain.
-  - Physical connectivity issue (e.g., monitor displaying "No signal").
+#### Cause Analysis
 
-**Troubleshooting Steps:**
+- Physical network connection errors (e.g., network cable plugged into the wrong NIC, mismatched workstation numbering and physical location)
+- Target device not joined to the domain or file/printer sharing not enabled
+- DNS resolution errors or hostname typos
+- Physical cable loose or not properly connected
 
-1. Verify host connectivity:
+#### Troubleshooting & Steps
+
+1. **Check if the target device is online**
+
     ```cmd
-    ping <Hostname/IP>
+    ping <target-hostname-or-IP>
     ```
-2. DNS resolution check:
+    - If unreachable, check power/network cable/switch port first.
+
+2. **Check DNS resolution**
+
     ```cmd
-    nslookup <Hostname>
+    nslookup <target-hostname>
     ```
-3. Check administrative share access:
+    - If failed, verify DNS configuration and hostname spelling.
+
+3. **Test shared path accessibility**
+
     ```cmd
-    net use \\<Hostname>\C$
+    net use \\<target-hostname>\C$
     ```
-4. Ensure File and Printer Sharing is enabled (Domain network only):
-    - Control Panel → Network and Sharing Center → Advanced Sharing Settings
-    - Enable:
-      - ✅ Network Discovery
-      - ✅ File and Printer Sharing (Domain network)
-    - **Security Best Practice:** Leave **Public network** sharing disabled.
-5. Firewall rules check for SMB (TCP 445):
+    - If authentication or access fails, check sharing status and permissions.
+
+4. **Enable file and printer sharing (manual GUI steps)**
+
+    - Control Panel → Network and Sharing Center → Change advanced sharing settings
+    - Only enable the following in **Domain network**:
+      - Network discovery
+      - File and printer sharing
+    - Keep all options in Public network **disabled** to avoid unnecessary exposure.
+
+5. **Check firewall settings**
+
     ```cmd
     netsh advfirewall firewall show rule name=all | findstr "File and Printer Sharing"
     ```
+    - If the rule is not enabled, temporarily allow or disable the firewall for testing.
+
+#### Practical Notes
+
+- During this internship, I only had local manual GUI privileges, so all configurations were performed one by one. After deployment, I promptly disabled unnecessary sharing for security.
 
 ---
 
-### ✅ Error 2: The Target Account Name is Incorrect
+### 2. The Target Account Name Is Incorrect
 
-- **Typical Cause:** Domain trust relationship issue.
-- **Troubleshooting Steps:**
-  1. Verify domain status on host:
-      ```cmd
-      systeminfo | findstr /i "Domain"
-      ```
-  2. Check AD computer account status.
-  3. Confirm DNS, hostname, and IP consistency.
-  4. Rejoin domain to restore trust relationship.
-- **Recommended Action:** Quickly resolve by domain rejoin.
+#### Cause Analysis
 
----
+- Trust relationship between target machine and AD domain controller lost
+- System reinstalled without rejoining the domain
+- VM restore or physical machine replacement causing computer account issues
 
-### ✅ Error 3: Windows Installer Engine Conflict (Error 1618)
+#### Troubleshooting & Fix
 
-- **Typical Causes:**
-  - Ongoing MSI installation tasks.
-  - Concurrent MSI deployment triggers.
+1. **Check domain status**
 
-- **Troubleshooting Steps:**
-  - Inspect Task Manager for hung MSI processes (`msiexec.exe`).
-  - Review recent MSI installer logs:
     ```cmd
+    systeminfo | findstr /i "Domain"
+    ```
+    - Confirm whether the device is a domain member.
+
+2. **“Leave and rejoin domain” if necessary**
+
+    - Use “This PC → Properties → Change settings” to leave and rejoin the domain to restore trust.
+
+3. **Verify hostname, IP, and DNS consistency**
+
+    - Ensure that AD, DNS, and the actual device state are synchronized.
+
+#### Practical Notes
+
+- For a workstation with a trust failure, I scheduled a **leave and rejoin domain** operation to re-establish deployment access.
+
+---
+
+### 3. Installation Process Conflict (Error 1618)
+
+#### Cause Analysis
+
+- Windows Installer (MSI engine) occupied by another installation process
+- Concurrent deployment tasks causing msiexec.exe process to hang
+- Antivirus, patching, or system repair processes occupying the installer
+
+#### Troubleshooting & Fix
+
+1. **Check processes in Task Manager**
+
+    - Look for msiexec.exe or any long-running installation tasks.
+
+2. **Check installation logs**
+
+    ```powershell
     Get-WinEvent -LogName Application | findstr MSIInstaller
     ```
-  - **Resolution:** Reboot host to safely terminate pending installations.
+
+3. **Handling**
+
+    - If the process is stuck for a long time, **restart the target machine** to release the MSI engine.
+    - Wait for current installation tasks to finish before re-deploying.
+
+#### Practical Notes
+
+- On the affected device, with multiple issues present, I restarted the machine and continued deployment after the reboot.
 
 ---
 
-## Security Practices and Considerations
+### 4. Special Application Errors (e.g., Packet Tracer command returns 1)
 
-- Enabled Network Discovery and File/Printer Sharing exclusively in **Domain Network** environment, strictly disabling such options in the **Public Network** to minimize unnecessary exposure and maintain secure network hygiene.
-- Actively reverted temporary GUI-based changes post-deployment to restore secure state.
-
-**Example Log Statement for Security Awareness:**
-
-> To troubleshoot the deployment issue in Classroom-25, I enabled Network Discovery and File/Printer Sharing explicitly within the Domain network profile, while ensuring Public network sharing remained fully disabled. Tomorrow, I plan to rejoin the domain to fully repair trust relationship issues before proceeding.
+- This type of error mainly affects Packet Tracer, which can be downloaded and installed manually. It was not a troubleshooting priority in this project.
 
 ---
 
-## Reflection and Improvement Suggestions
+## 3. Security Awareness and Operations Mindset
 
-- Comprehensive troubleshooting covering **physical (network interfaces, VLANs)**, **system (services, processes)**, **administrative (hostnames, IP, registry, group policy)**, and **platform layers (PDQ configurations, credentials)** proved essential.
-- Although final resolution centered around physical connectivity and IP configuration, detailed checks at all layers confirmed the absence of compounded issues.
-- Recognized value of batch automation: future steps would leverage scripts or Group Policy Objects (GPOs) for efficiency, pending higher permission levels.
-
----
-
-## Conclusion
-
-This troubleshooting exercise highlighted the importance of consistency between physical connections and logical identifiers in batch deployments. Systematic diagnosis across network, system, and administrative layers facilitated prompt resolution. Though currently limited by permissions (student status without admin-level controls), I maintain clarity in automation approaches and aspire to utilize scripts or centralized policies for enhanced efficiency and security in future professional scenarios.
+- **Principle of least exposure:** Only enable sharing and network discovery in Domain networks; keep Public network settings closed to reduce attack surface.
+- Promptly roll back or clean up permissions after configuration to avoid leftover vulnerabilities.
+- Although I could only operate manually, I have accumulated ideas for automation scripts and Group Policy (GPO) bulk management.
+- In future scenarios with more privileges, I will implement standardized batch processes via PowerShell or remote GPO to improve efficiency and consistency.
 
 ---
 
-*Prepared by [Your Name]*  
-*[Date]*
+## 4. Self-Reflection and Recommendations
+
+- Due to lack of domain GPO and remote management rights, all work was performed manually via GUI, which was inefficient.
+- I proactively summarized and accumulated knowledge of automation and scripting for bulk management, so I can respond more quickly to similar situations in the future.
+- Most batch deployment failures fundamentally stem from inconsistencies in basic network, sharing, domain accounts, and system environment configuration.
+- For similar future projects, I would calibrate network, DNS, AD domain, and workstation states in advance and perform unified checks and remediation before mass deployment.
+
+---
+
+## 5. Summary
+
+This batch deployment internship systematically addressed typical issues such as **network path not found, target account name incorrect, and installation process conflicts**. Through standardized network checks, sharing service configuration, domain account, and process management, most deployment failures can be identified and resolved. Even with manual-only privileges, I maintained clear security principles and a proactive mindset for automation. When granted higher-level rights in the future, I will prioritize scripted and GPO-based batch management to ensure deployment security and efficiency.
+
+---
