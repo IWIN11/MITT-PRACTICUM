@@ -1,0 +1,164 @@
+# PDQ Batch Deployment Troubleshooting & Resolution
+
+## Problem Background
+
+During batch deployment using PDQ Deploy, one specific host (Host-11) remained persistently in the **"Queued"** state while all other hosts completed successfully.
+
+---
+
+## Detailed Troubleshooting and Resolution Steps
+
+### 1. **Physical Network & IP Configuration Check**
+
+- **Issue Identification:**
+  - Inspected physical network connections and discovered Host-11 had its Ethernet cable connected incorrectly. The host had two network interface cards (**NICs**), and the active cable was connected to a different wall port compared to other hosts, resulting in the assignment of an incorrect **VLAN** and IP address.
+- **Resolution:**
+  - Corrected cable connection to the appropriate network port (**NIC**), ensuring proper VLAN assignment and correct IP allocation.
+
+### 2. **IP Address and Hostname Verification**
+
+- **Issue Identification:**
+  - Logged into Host-11 and executed:
+    ```cmd
+    ipconfig
+    hostname
+    ```
+  - IP mismatch detected: current IP `X.X.X.193` did not match the registered IP (`X.X.X.111`) in Active Directory (AD) and PDQ.
+- **Resolution:**
+  - After fixing the physical connection, the host automatically received the correct IP configuration (`X.X.X.111`).
+
+### 3. **DNS and AD Synchronization**
+
+- **Validation Steps:**
+  - Verified DNS resolution from PDQ server using:
+    ```cmd
+    ping Host-11
+    nslookup Host-11
+    ```
+  - Confirmed proper DNS-to-IP resolution post-IP correction.
+
+### 4. **Task Manager and PDQ Process Verification**
+
+- **Validation Steps:**
+  - Checked Task Manager for running PDQ deployment processes, specifically `PDQDeployRunner.exe`.
+  - Determined the deployment task never reached Host-11 as the PDQ-related processes were absent.
+
+### 5. **Service and Registry Checks**
+
+- **Service Validation:**
+  - Used `services.msc` to confirm **Remote Procedure Call (RPC)** and **Windows Management Instrumentation (WMI)** services were running normally.
+  - Verified **Remote Registry** service and configured it to start automatically.
+- **Administrative Share Verification (ADMIN$):**
+  - Verified ADMIN$ share status using:
+    ```cmd
+    net share
+    ```
+  - **Explanation:** ADMIN$ share is critical for remote software deployments as it allows administrative file access. If unavailable, deployment can fail due to permissions or access restrictions.
+
+### 6. **Restart and Configuration Synchronization**
+
+- After resolving physical network, IP, and registry settings, Host-11 was rebooted to apply all configuration changes and clear cached states or pending connections.
+
+### 7. **PDQ Console Refresh and Redeployment**
+
+- **Final Steps:**
+  - Refreshed host status in the PDQ Deploy console; confirmed Host-11 status showed as **Online**.
+  - Initiated deployment task again; deployment succeeded successfully.
+
+---
+
+## Common Errors & Troubleshooting Best Practices during PDQ Deployment
+
+### ✅ Error 1: Network Path Not Found
+
+- **Typical Causes:**
+  - Incorrect NIC connection causing IP mismatch.
+  - Device replacement (e.g., Host-9 replaced by Host-25), changing IP and hostname.
+  - Host not successfully joined to AD domain.
+  - Physical connectivity issue (e.g., monitor displaying "No signal").
+
+**Troubleshooting Steps:**
+
+1. Verify host connectivity:
+    ```cmd
+    ping <Hostname/IP>
+    ```
+2. DNS resolution check:
+    ```cmd
+    nslookup <Hostname>
+    ```
+3. Check administrative share access:
+    ```cmd
+    net use \\<Hostname>\C$
+    ```
+4. Ensure File and Printer Sharing is enabled (Domain network only):
+    - Control Panel → Network and Sharing Center → Advanced Sharing Settings
+    - Enable:
+      - ✅ Network Discovery
+      - ✅ File and Printer Sharing (Domain network)
+    - **Security Best Practice:** Leave **Public network** sharing disabled.
+5. Firewall rules check for SMB (TCP 445):
+    ```cmd
+    netsh advfirewall firewall show rule name=all | findstr "File and Printer Sharing"
+    ```
+
+---
+
+### ✅ Error 2: The Target Account Name is Incorrect
+
+- **Typical Cause:** Domain trust relationship issue.
+- **Troubleshooting Steps:**
+  1. Verify domain status on host:
+      ```cmd
+      systeminfo | findstr /i "Domain"
+      ```
+  2. Check AD computer account status.
+  3. Confirm DNS, hostname, and IP consistency.
+  4. Rejoin domain to restore trust relationship.
+- **Recommended Action:** Quickly resolve by domain rejoin.
+
+---
+
+### ✅ Error 3: Windows Installer Engine Conflict (Error 1618)
+
+- **Typical Causes:**
+  - Ongoing MSI installation tasks.
+  - Concurrent MSI deployment triggers.
+
+- **Troubleshooting Steps:**
+  - Inspect Task Manager for hung MSI processes (`msiexec.exe`).
+  - Review recent MSI installer logs:
+    ```cmd
+    Get-WinEvent -LogName Application | findstr MSIInstaller
+    ```
+  - **Resolution:** Reboot host to safely terminate pending installations.
+
+---
+
+## Security Practices and Considerations
+
+- Enabled Network Discovery and File/Printer Sharing exclusively in **Domain Network** environment, strictly disabling such options in the **Public Network** to minimize unnecessary exposure and maintain secure network hygiene.
+- Actively reverted temporary GUI-based changes post-deployment to restore secure state.
+
+**Example Log Statement for Security Awareness:**
+
+> To troubleshoot the deployment issue in Classroom-25, I enabled Network Discovery and File/Printer Sharing explicitly within the Domain network profile, while ensuring Public network sharing remained fully disabled. Tomorrow, I plan to rejoin the domain to fully repair trust relationship issues before proceeding.
+
+---
+
+## Reflection and Improvement Suggestions
+
+- Comprehensive troubleshooting covering **physical (network interfaces, VLANs)**, **system (services, processes)**, **administrative (hostnames, IP, registry, group policy)**, and **platform layers (PDQ configurations, credentials)** proved essential.
+- Although final resolution centered around physical connectivity and IP configuration, detailed checks at all layers confirmed the absence of compounded issues.
+- Recognized value of batch automation: future steps would leverage scripts or Group Policy Objects (GPOs) for efficiency, pending higher permission levels.
+
+---
+
+## Conclusion
+
+This troubleshooting exercise highlighted the importance of consistency between physical connections and logical identifiers in batch deployments. Systematic diagnosis across network, system, and administrative layers facilitated prompt resolution. Though currently limited by permissions (student status without admin-level controls), I maintain clarity in automation approaches and aspire to utilize scripts or centralized policies for enhanced efficiency and security in future professional scenarios.
+
+---
+
+*Prepared by [Your Name]*  
+*[Date]*
