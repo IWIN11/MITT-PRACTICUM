@@ -39,14 +39,6 @@ This task gave me hands-on experience in operational network administration with
 
 ---
 
-### Team Members
-
-- Aiwei Tu
-- Prabhjot Kaur
-- Arshdeep Kaur
-
----
-
 ## Server Deployment, RAID Provisioning, and KVM Integration
 
 ### Overview
@@ -100,14 +92,6 @@ As part of my practicum at MITT, I participated in deploying, configuring, and t
 
 This project provided real-world experience in enterprise server deployment, RAID provisioning, and KVM integration. I developed practical skills in hardware configuration, BIOS/RAID setup, and device documentation. These competencies are directly applicable to roles in network and system administration.
 
----
-
-### Team Members
-
-- Aiwei Tu
-- Prabhjot Kaur
-- Arshdeep Kaur
-- Balkaran Singh
 
 ---
 
