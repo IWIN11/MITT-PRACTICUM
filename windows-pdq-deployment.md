@@ -72,7 +72,7 @@ During a batch deployment using PDQ Deploy, only one target machine (Workstation
 
 ---
 
-## Conclusion (for Report/Presentation)
+## Conclusion 
 
 This practicum troubleshooting exercise demonstrates a systematic, multi-level approach:  
 From physical network cable inspection and endpoint addressing, to system service, registry, and admin share validation, then up to console/platform diagnostics.  
