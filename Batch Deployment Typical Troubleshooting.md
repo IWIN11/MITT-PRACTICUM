@@ -1,6 +1,8 @@
-# Batch Deployment Typical Troubleshooting
+# MITT-PRACTICUM
 
-## 1. Background
+## Batch Deployment Typical Troubleshooting
+
+### 1. Background
 
 In this VMware Workstation and system batch deployment project, I was responsible for deploying applications to multiple physical workstations. During the process, I encountered several common failures that are highly representative of real-world troubleshooting and remediation. This document summarizes the main issue types, troubleshooting methods, operational commands, security awareness, and personal reflections, serving as a reference for future automation and IT operations improvements.
 
