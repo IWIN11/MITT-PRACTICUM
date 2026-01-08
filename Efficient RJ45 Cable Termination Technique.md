@@ -1,4 +1,6 @@
-# Efficient RJ45 Cable Termination Technique
+# MITT-PRACTICUM
+
+## Efficient RJ45 Cable Termination Technique
 
 During today’s practicum, the instructor Victor Chavez demonstrated a quicker and more efficient way to insert the twisted pair wires into the RJ45 connector.
 
