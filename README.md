@@ -1,3 +1,5 @@
+# MITT-PRACTICUM
+
 Quick Overview
 This repository documents my hands-on IT practicum work in a real school lab environment (Winnipeg, MB). Key deliverables include endpoint deployment runbooks, network device inventory/audit notes, and infrastructure build documentation.
 Highlights:
@@ -19,15 +21,6 @@ Windows PDQ deployment notes
 RJ45 termination technique
 
 Inventory classification notes
-
-
-
-
-
-
-# MITT-PRACTICUM
-
-My individual submission for the practicum.
 
 ---
 
