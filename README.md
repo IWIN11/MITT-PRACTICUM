@@ -10,9 +10,9 @@ Built a workstation for console access (BIOS/USB install, PuTTY) and improved ef
 
 Documented server deployment work including RAID provisioning (Dell PERC / HP Smart Array) and KVM integration.
 
-Key Deliverables (click to view)
+Key Deliverables 
 
-Switch inventory audit (README section)
+Switch inventory audit 
 
 PXE deployment & domain join summary
 
