@@ -1,3 +1,30 @@
+Quick Overview
+This repository documents my hands-on IT practicum work in a real school lab environment (Winnipeg, MB). Key deliverables include endpoint deployment runbooks, network device inventory/audit notes, and infrastructure build documentation.
+Highlights:
+
+Audited and documented 30 Cisco switches (model/serial/ports/IOS/image) for asset lifecycle planning.
+
+Built a workstation for console access (BIOS/USB install, PuTTY) and improved efficiency by batching device processing.
+
+Documented server deployment work including RAID provisioning (Dell PERC / HP Smart Array) and KVM integration.
+
+Key Deliverables (click to view)
+
+Switch inventory audit (README section)
+
+PXE deployment & domain join summary
+
+Windows PDQ deployment notes
+
+RJ45 termination technique
+
+Inventory classification notes
+
+
+
+
+
+
 # MITT-PRACTICUM
 
 My individual submission for the practicum.
